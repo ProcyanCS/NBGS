@@ -38,3 +38,18 @@ clParticle::clParticle(const std::string& str_ID,
 {
 
 }
+
+std::string clParticle::getStr()
+{
+    std::string s = getID() + ", " +
+                    std::to_string(getX()) + ", " +
+                    std::to_string(getY()) + ", " +
+                    std::to_string(getZ()) + ", " +
+                    std::to_string(getVX()) + ", " +
+                    std::to_string(getVY()) + ", " +
+                    std::to_string(getVZ()) + ", " +
+                    std::to_string(getMass());
+
+    return s;
+
+}

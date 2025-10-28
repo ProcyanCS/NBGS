@@ -20,6 +20,8 @@ public:
                double mass
                );
 
+    std::string getStr();
+
     std::string getID() const { return m_strID; }
     void setID( std::string val ){ m_strID = val; }
     //void setID( QString val ) { m_strID = val.toStdString() ;}

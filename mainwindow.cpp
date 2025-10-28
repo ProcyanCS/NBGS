@@ -4,7 +4,7 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QDebug>
-
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -35,8 +35,26 @@ void MainWindow::on_action_Load_triggered()
         return;
     }
 
-    M_COMMON.Data()->loadCSV( fileName.toStdString());
+    M_COMMON.Data()->reset();
+
+    const std::string& file = fileName.toStdString();
+    M_COMMON.Data()->loadCSV( file );
+
+    M_COMMON.Data()->calcTotalMass();
+    std::cout << M_COMMON.Data()->getTotalMass() << std::endl;
+}
 
 
+void MainWindow::on_actionSave_As_triggered()
+{
+    QString fileName = QFileDialog::getSaveFileName(
+        nullptr,
+        "Save CSV File",
+        "",
+        "CSV Files (*.csv);;All Files (*)"
+        );
+
+    const std::string& file = fileName.toStdString();
+    M_COMMON.Data()->saveCSV( file );
 }
 

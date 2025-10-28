@@ -9,12 +9,14 @@ class clDataset
 public:
     clDataset();
 
+    void reset();
+
     void calcTotalMass();
     double getTotalMass(){ return m_dTotalMass; }
     void setTotalMass( double val ) { m_dTotalMass = val; }
 
-    void loadCSV( std::string& filename );
-    void saveCSV( std::string& filename );
+    void loadCSV( const std::string& filename );
+    void saveCSV( const std::string& filename );
     bool validLine( std::vector<std::string> vecStr );
 
     double getKE(){ return m_dTotalKineticEnergy; }
