@@ -5,6 +5,12 @@
 #include <Qstring>
 #include <vector>
 
+
+#include <vtkActor.h>
+#include <vtkSmartPointer.h>
+
+class vtkActor;
+
 class clParticle
 {
 public:
@@ -20,7 +26,7 @@ public:
                double mass
                );
 
-    std::string getStr();
+    const std::string getStr();
 
     std::string getID() const { return m_strID; }
     void setID( std::string val ){ m_strID = val; }
@@ -47,6 +53,10 @@ public:
     void setPE( double val){ m_dPotentialEnergy = val; }
     double getPE() const { return m_dPotentialEnergy; }
 
+    void setActor( vtkSmartPointer<vtkActor> actor) { m_vtkActor = actor; }
+    vtkSmartPointer<vtkActor> getActor() const { return m_vtkActor; }
+    void updateActor();
+
 private:
 
     std::string m_strID;
@@ -63,6 +73,7 @@ private:
     double m_dKineticEnegy;
     double m_dPotentialEnergy;
 
+    vtkSmartPointer<vtkActor> m_vtkActor;
 };
 
 #endif // CLPARTICLE_H

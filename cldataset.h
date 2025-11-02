@@ -2,6 +2,7 @@
 #define CLDATASET_H
 
 #include <vector>
+#include <tuple>
 #include "clparticle.h"
 
 class clDataset
@@ -10,6 +11,15 @@ public:
     clDataset();
 
     void reset();
+
+    void update( double timestep );
+    std::tuple<double, double, double> getWeightedCOM();
+    void calcNewVelocity(
+        std::tuple<double, double, double> tup_COM,
+        double timestep );
+
+    void calcNewPosition( double timestep );
+
 
     void calcTotalMass();
     double getTotalMass(){ return m_dTotalMass; }
@@ -22,9 +32,13 @@ public:
     double getKE(){ return m_dTotalKineticEnergy; }
     void setTotalKE( double val ){ m_dTotalKineticEnergy = val; }
     void calcKE();
+
     double getPE(){ return m_dTotalPotentialEnergy; }
     void setTotalPE( double val ){ m_dTotalPotentialEnergy = val; }
     void calcPE();
+
+    uint getNumParticles(){ return m_vecParticles.size(); }
+    std::vector<clParticle>& Particles() { return m_vecParticles; }
 
 private:
     std::vector<clParticle> m_vecParticles;

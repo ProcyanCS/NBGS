@@ -39,7 +39,14 @@ clParticle::clParticle(const std::string& str_ID,
 
 }
 
-std::string clParticle::getStr()
+/* Method: getStr()
+ * returns std::string
+ * Description: This method returns a std::string representation
+ * of the data point's ASCII representation for an input file.
+ * The format is currently:
+ * obj_id, x, y, z, vx, vy, vz, mass
+ */
+const std::string clParticle::getStr()
 {
     std::string s = getID() + ", " +
                     std::to_string(getX()) + ", " +
@@ -52,4 +59,14 @@ std::string clParticle::getStr()
 
     return s;
 
+}
+
+/* Method: updateActor()
+ * returns: void
+ * Description: This method is used to update the position of the vtkActor
+ * to the current X,Y,Z coordinates stored locally.
+ */
+void clParticle::updateActor()
+{
+    getActor()->SetPosition(getX(), getY(), getZ());
 }
