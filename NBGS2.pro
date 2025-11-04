@@ -71,14 +71,6 @@ VTK_DLLS = \
     $$HOME/vtk-install/bin/libvtkParallelCore-9.5.dll \
     $$HOME/vtk-install/bin/libvtkParallelDIY-9.5.dll
 
-win32 {
-        for(dll, VTK_DLLS) {
-        COPY_COMMANDS += $$quote("cp -f $$dll $$DESTDIR")$$escape_expand(\\n\\t)
-
-        }
-        QMAKE_POST_LINK += $$COPY_COMMANDS
-        message("Copy command:  $$escape_expand(\\n\\t) $$COPY_COMMANDS")
-}
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
@@ -106,3 +98,13 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+# must deploy VTK dlls with exe
+win32 {
+        for(dll, VTK_DLLS) {
+        COPY_COMMANDS += $$quote("cp -f $$dll $$DESTDIR")$$escape_expand(\\n\\t)
+
+        }
+        QMAKE_POST_LINK += $$COPY_COMMANDS
+        message("Copy command:  $$escape_expand(\\n\\t) $$COPY_COMMANDS")
+}

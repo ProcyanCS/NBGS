@@ -70,3 +70,19 @@ void clParticle::updateActor()
 {
     getActor()->SetPosition(getX(), getY(), getZ());
 }
+
+/* Method: calcKE()
+ * returns: void
+ * Description: This method is used to compute the kinetic energy of an
+ * individual particle for monitoring the energy budget.
+ * TODO: Future implementation for unit testing.
+ */
+void clParticle::calcKE()
+{
+    double dKE = 0.5 * getMass() * (pow(getVX(), 2) +
+                                    pow(getVY(), 2) +
+                                    pow(getVZ(), 2) );
+
+    setKE( dKE );
+}
+

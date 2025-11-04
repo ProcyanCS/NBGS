@@ -48,7 +48,10 @@ public:
     double getMass() { return m_dMass; }
     void setMass( double val ){ m_dMass = val; }
 
+    // Energy budget methods
+    // NOTE: PE must be set in regards to particle collection
     void calcKE();
+    void setKE( double val ){ m_dKineticEnegy = val; }
     double getKE() const { return m_dKineticEnegy; }
     void setPE( double val){ m_dPotentialEnergy = val; }
     double getPE() const { return m_dPotentialEnergy; }

@@ -23,6 +23,8 @@ public:
 
     VTKWidget* vtkWidget;
 
+    void toggleUIControls( bool bEnable );
+
     void CreateViewWidget();
     void InitViewWidget();
     void UpdateViewWidget();

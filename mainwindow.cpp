@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     CreateViewWidget();
     this->setWindowTitle(QString("N-body Gravitational Simulator"));
 
+    toggleUIControls(false);
 
 }
 
@@ -38,6 +39,11 @@ void MainWindow::CreateViewWidget()
 
 }
 
+/* Method: InitViewWidget()
+ * returns: void
+ * Description: Method to convert the particles into scene actors and begin
+ * t=0 rendering.
+ */
 void MainWindow::InitViewWidget()
 {
     for (auto& p : M_COMMON.Data()->Particles() )
@@ -50,6 +56,12 @@ void MainWindow::InitViewWidget()
     vtkWidget->safeRender();
 }
 
+
+/* Method: UpdateViewWidget()
+ * returns: void
+ * Description: This method is used to update the particle positions for actors
+ * in the scene.
+ */
 void MainWindow::UpdateViewWidget()
 {
     for (auto& p : M_COMMON.Data()->Particles())
@@ -90,8 +102,9 @@ void MainWindow::on_action_Load_triggered()
     //DataUpdate();
     M_COMMON.Data()->calcTotalMass();
     InitViewWidget();
-}
 
+    toggleUIControls( true );
+}
 
 void MainWindow::on_actionSave_As_triggered()
 {
@@ -113,10 +126,14 @@ void MainWindow::on_actionSave_As_triggered()
  */
 void MainWindow::on_btn_Rewind_clicked()
 {
+    // Clear current particles from dataset and vtk
     M_COMMON.Data()->reset();
-    M_COMMON.Data()->loadCSV(M_COMMON.getFilename());
+    vtkWidget->clearActors();
 
+    // reload original particle set
+    M_COMMON.Data()->loadCSV(M_COMMON.getFilename());
     M_COMMON.Data()->calcTotalMass();
+
     InitViewWidget();
 }
 
@@ -124,6 +141,8 @@ void MainWindow::on_btn_Rewind_clicked()
 void MainWindow::on_btn_PlayForward_clicked()
 {
     // Mock play simulation - just force for duration
+    // Will need to set up listener event loop to catch actions
+    // during loop.
     double dTime = 0.0;
     double dTime_END = 0.001;
     while (dTime < dTime_END)
@@ -132,8 +151,9 @@ void MainWindow::on_btn_PlayForward_clicked()
         std::cout << "Current Time: " << std::to_string(dTime) << std::endl;
         UpdateViewWidget();
 
-        QCoreApplication::processEvents(); // Let Qt repaint
-        QThread::msleep(30);               // ~30ms delay for visibility
+        // Need to let time for Qt to repaint, PC too fast!
+        QCoreApplication::processEvents();
+        QThread::msleep(30);
 
         dTime += M_COMMON.getTimeStep();
     }
@@ -147,3 +167,13 @@ void MainWindow::on_btn_FrameForward_clicked()
     UpdateViewWidget();
 }
 
+void MainWindow::toggleUIControls( bool bEnable )
+{
+    // Backwards is disabled for now, not even sure how I gonna do that without storing
+    // prior states--mathematical backpedal may not work w.r.t. energy conservation.
+    ui->btn_FrameBackward->setEnabled(false);
+    ui->btn_FrameForward->setEnabled(bEnable);
+    ui->btn_PlayBackward->setEnabled(false);
+    ui->btn_PlayForward->setEnabled(bEnable);
+    ui->btn_Rewind->setEnabled(bEnable);
+}
